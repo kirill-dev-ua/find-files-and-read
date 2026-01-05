@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Component
 public class FileFinder {
-    private final Path folderPath = Path.of("src/main/resources/direct");
+    private final Path folderPath = Path.of("src/main/resources/direct/");
 
     public Optional<Path> findLatestTxtFile() throws IOException {
         return Files.walk(folderPath)
