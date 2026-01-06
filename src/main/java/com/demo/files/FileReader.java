@@ -7,10 +7,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 @Component
-public class FileDownloader {
-    public String downloadFileContent(Path latestTxtKey) {
+public class FileReader {
+    public String readFileContent(Path latestKey) {
         try {
-            return  new String(Files.readAllBytes(latestTxtKey));
+            //TODO переписать readAllBytes и вычитывать файл построчно
+            return new String(Files.readAllBytes(latestKey));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

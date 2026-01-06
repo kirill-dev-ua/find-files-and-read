@@ -4,14 +4,20 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.Optional;
 
 @Component
-public record FileProcessor(FileFinder fileFinder, FileDownloader fileDownloader, TextFileAnalyzer textFileAnalyzer) {
-    public long processLatestTextFile(String wordToCount) throws IOException {
-        Optional<Path> latestTxtKey = fileFinder.findLatestTxtFile();
-        String counter = fileDownloader.downloadFileContent(latestTxtKey.orElse(null));
-        System.out.println(textFileAnalyzer.countWordOccurrences(counter, wordToCount));
-        return textFileAnalyzer.countWordOccurrences(counter, wordToCount);
+public record FileProcessor(
+        FileFinder fileFinder,
+        FileReader fileReader,
+        FileAnalyzer fileAnalyzer
+) {
+
+    public long processLatestFile(String wordToCount, FileExtension fileExtension) throws IOException {
+
+        Path latestFile = fileFinder.findLatestFile(fileExtension).orElseThrow(() -> new IllegalStateException("File with extension " + fileExtension + " not found"));
+
+        String content = fileReader.readFileContent(latestFile);
+
+        return fileAnalyzer.countWordOccurrences(content, wordToCount);
     }
 }
